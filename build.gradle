@@ -1,3 +1,4 @@
+
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
@@ -12,15 +13,31 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	mavenCentral()
+  
 }
-
+sourceSets {
+    client {
+        java {
+            srcDir 'src/client/java'
+        }
+        resources {
+            srcDir 'src/client/resources'
+        }
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
 loom {
-	splitEnvironmentSourceSets()
-
+	runs {
+        client {
+            source sourceSets.client // подключаем клиентский sourceSet к runClient
+        }
+    }
 	mods {
-		"modid" {
+		"culture-corner" {
 			sourceSet sourceSets.main
-			sourceSet sourceSets.client
+			
 		}
 	}
 }
@@ -32,12 +49,14 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 processResources {
 	def version = project.version
 	inputs.property "version", version
-
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	filesMatching("fabric.mod.json") {
 		expand "version": version
 	}
@@ -55,6 +74,7 @@ java {
 
 	sourceCompatibility = JavaVersion.VERSION_25
 	targetCompatibility = JavaVersion.VERSION_25
+	
 }
 
 jar {
@@ -64,6 +84,7 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_$projectName"}
 	}
+	from sourceSets.client.output
 }
 
 // configure the maven publication

@@ -1,11 +1,11 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "culture-corner",
 	"version": "${version}",
-	"name": "Example Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Culture Corner",
+	"description": "Всегда хотели покрыть матом человека в бедварсе, но не могли из за анти мата на сервере? Этот мод специально для Вас! Теперь вы будете говорить культурно как аристократ 19 века!",
 	"authors": [
-		"Me!"
+		"Pasaa_7777"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -16,19 +16,14 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.culturecorner.Main"
+			
 		],
 		"client": [
-			"com.example.client.ExampleModClient"
+			"com.culturecorner.clientmod.culturecorner_main"
 		]
 	},
-	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
-	],
+	"mixins": [],
 	"depends": {
 		"fabricloader": ">=0.19.3",
 		"minecraft": "~26.1.2",
